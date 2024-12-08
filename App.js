@@ -1,12 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Appearance, useColorScheme } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { NavigationContainer, useTheme } from '@react-navigation/native';
+import DrawerNavigator from './navigation/DrawerNavigator';
+import DarkTheme from './theme/DarkTheme';
+import LightTheme from './theme/LightTheme';
+import { AppContext } from './theme/AppContext';
+
+
 
 export default function App() {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+ 
+
+  const appContext = useMemo(() => {
+    return { isDarkTheme, setIsDarkTheme }
+  })
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
+      <AppContext.Provider value={appContext}>
+        <DrawerNavigator />
+      </AppContext.Provider>
+    </NavigationContainer>
   );
 }
 
